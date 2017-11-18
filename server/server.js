@@ -13,12 +13,14 @@ var io = socketIO(server);
 
 app.use(express.static(publicPath));
 
+// io.emit emit to all connections; 
+// socket.emit send only to a single connection
 io.on('connection', (socket) => {
   console.log('New user connected');
 
   socket.on('createMessage', (message) => {
     console.log('createMessage', message);
-    io.emit('newMessage', {   // io.emit broadcast to all connections; socket.emit send only to a single connection
+    io.emit('newMessage', {
       from: message.from,
       text: message.text,
       createdAt: new Date().getTime()
