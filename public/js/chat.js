@@ -19,6 +19,7 @@ function scrollToButtom () {
 // CONNECT
 socket.on('connect', function () {
   var params = jQuery.deparam(window.location.search);
+  jQuery('title').text('Chat in Room ' + params.room + ' | ChatApp');
 
   socket.emit('join', params, function (err) {
     if (err) {
@@ -33,6 +34,16 @@ socket.on('connect', function () {
 // DISCONNECT
 socket.on('disconnect', function () {
   console.log('Disconnected from server');
+});
+
+socket.on('updateUserList', function (users) {
+  var ol = jQuery('<ol></ol>');
+
+  users.forEach(function (user) {
+    ol.append(jQuery('<li></li>').text(user));
+  });
+
+  jQuery('#users').html(ol);
 });
 
 socket.on('newMessage', function (message) {
