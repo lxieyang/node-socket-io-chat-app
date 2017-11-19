@@ -31,9 +31,10 @@ io.on('connection', (socket) => {
   // alert everyone else that someone is new here
   socket.broadcast.emit('newMessage', generateMessage('Admin', 'New user joined the chat!'));
 
-  socket.on('createMessage', (message) => {
+  socket.on('createMessage', (message, callback) => {
     console.log('createMessage', message);
     io.emit('newMessage', generateMessage(message.from, message.text));
+    callback('This is from the server');
   });
 
   socket.on('disconnect', () => {
